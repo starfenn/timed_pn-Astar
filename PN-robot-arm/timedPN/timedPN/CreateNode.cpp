@@ -82,12 +82,15 @@ void CreateNode(Tree *Tr, int Transition, int current_m[],int place_num,int Dela
 		(*Tr).current_node->new_m_x[i] = x[i];
 	}
 	(*Tr).current_node->new_m_g = g;
-	(*Tr).current_node->new_m_h_min = 100;
+	(*Tr).current_node->new_m_h_min = 100000;
 	(*Tr).current_node->new_m_come = ((*Tr).source_node)->new_m_num;//标识的来源下标放到输出表中 
 	(*Tr).current_node->source = (*Tr).source_node;
 	(*Tr).current_node->new_m_transition = T_num;//标识激发的变迁的下标放到输出表中 
 	(*Tr).current_node->new_m_num = (*Tr).node_num;
 	(*Tr).current_node->next = NULL;
 	(*Tr).current_node->next_open = NULL;
+	(*Tr).current_node->bcak_open = NULL;
+	(*Tr).current_node->same = NULL;
+	(*Tr).current_node->same_end = NULL;
 }
 

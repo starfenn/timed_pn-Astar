@@ -15,7 +15,7 @@ Return void
 void InitTree(Tree *Tr, int place_num, int trainsition_num)
 {
 	(*Tr).head_Node = (*Tr).finish_head_Node = NULL;
-	(*Tr).current_node = (*Tr).last_node = (*Tr).open_end = (*Tr).source_node =(*Tr).finish_node_end  = NULL;
+	(*Tr).current_node = (*Tr).last_node = (*Tr).open_end = (*Tr).source_node =(*Tr).finish_node_end  = (*Tr).deadlock_end= (*Tr).deadlock_head=NULL;
 	(*Tr).node_num = 0;
 	(*Tr).place_num = place_num;
 	(*Tr).transition_num = trainsition_num;
@@ -53,7 +53,7 @@ void InitNode(Tree *Tr, int M0[],int  place_num)
 
 	(*Tr).current_node->new_m_num = 0;      //第一个结点的标识下标是0
 	(*Tr).current_node->new_m_g = 0;
-	(*Tr).current_node->new_m_h_min = 100;
+	(*Tr).current_node->new_m_h_min = 100000;
 	(*Tr).current_node->new_m_come = 0;     //无标识来源
 	(*Tr).current_node->source = NULL;      //无来源结点
 	(*Tr).current_node->new_m_transition = 0;//无变迁来源
@@ -61,6 +61,9 @@ void InitNode(Tree *Tr, int M0[],int  place_num)
 	(*Tr).current_node->next = NULL;        //将下一个结点赋为空
 	(*Tr).current_node->next_open = NULL;
 	(*Tr).current_node->old = 0;
+	(*Tr).current_node->bcak_open = NULL;
+	(*Tr).current_node->deadlock_next = NULL;
+	(*Tr).current_node->deadlock = 0;
 	(*Tr).current_node->same = NULL;
 	(*Tr).current_node->same_end = NULL;
 	(*Tr).current_node->old_mark = 0;

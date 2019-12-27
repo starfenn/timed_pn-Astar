@@ -42,6 +42,9 @@
     <ClInclude Include="Completecrosslinkedlist .h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="back_tree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timedPN.cpp">

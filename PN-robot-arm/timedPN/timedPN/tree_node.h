@@ -11,6 +11,7 @@ typedef struct Node
 	int new_m_h; //估计值
 	int new_m_h_min; // 估计值最小值
 	int new_m_come;//新标识的标识来源
+	int deadlock;
 	struct Node *source; //新标识的来源节点   
 	int new_m_transition;//新标识的变迁来源
 	struct Node *next_open;//下一个要扩展的标识
@@ -21,6 +22,8 @@ typedef struct Node
 	int old_mark;//旧的标识的下标
 	int finish;  //终止扩展结点 
 	struct Node *finish_node; // 首次连接终止结点
+	struct Node *bcak_open; //反向扩展
+	struct Node *deadlock_next;
 } *Nodelink;
 
 
@@ -31,6 +34,8 @@ typedef struct
 	Node *last_node;  //当前结点的上一个结点
 	Node *finish_head_Node; //树的终止结点
 	Node *finish_node_end; // 末尾连接终止结点
+	Node *deadlock_head;
+	Node *deadlock_end;
 	Node *open_end;  //扩展的尾结点   
 	Node *source_node; //结点的来源结点
 	int  place_num;  //库所数量

@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AddNewNode.h" />
+    <ClInclude Include="back_tree.h" />
     <ClInclude Include="CreateNode.h" />
     <ClInclude Include="data_read.h" />
     <ClInclude Include="new_or_old.h" />

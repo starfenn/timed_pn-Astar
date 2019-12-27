@@ -3,41 +3,104 @@
 #include "tree_node.h"
 #include"output.h"
 
+void backoutput(Tree *Tr, int delay[])
+{
+	int i;
+	FILE *fp;
+	struct Node *P, *Q;
+	P = (*Tr).head_Node;
+	Q = (*Tr).finish_head_Node;
+	fp = fopen("D:\\timed_pn-Astar\\PN-robot-arm\\backoutput5.txt", "w+");
+	do
+	{
+		for (i = 0; i < (*Tr).place_num; i++)
+		{
+			fprintf(fp, "%2d\t", P->new_m[i]);
+		}
+		for (i = 0; i < (*Tr).place_num; i++)
+		{
+			if (delay[i] != 0)
+			{
+				fprintf(fp, "%2d\t", P->new_m_x[i]);
+			}
+		}
+		fprintf(fp, "%2d\t", P->new_m_g);
+		fprintf(fp, "%2d\n", P->new_m_h_min);
+		P = P->next_open;
+
+	} while (P != NULL);
+	do
+	{
+		for (i = 0; i < (*Tr).place_num; i++)
+		{
+			fprintf(fp, "%2d\t", Q->new_m[i]);
+		}
+		for (i = 0; i < (*Tr).place_num; i++)
+		{
+			if (delay[i] != 0)
+			{
+				fprintf(fp, "%2d\t", Q->new_m_x[i]);
+			}
+		}
+		fprintf(fp, "%2d\t", Q->new_m_g);
+		fprintf(fp, "%2d\n", Q->new_m_h_min);
+		Q = Q->finish_node;
+
+	} while (Q != NULL);
+
+}
+
 void output1(Tree *Tr)
 {
 	int i;
 	FILE *fp;
 	struct Node *P, *Q;
 	P = (*Tr).head_Node;
-	fp = fopen("C:\\Users\\A237\\Desktop\\PN\\timed-PN(1)\\timed-PN\\out1.txt", "w+");
+	fp = fopen("D:\\timed_pn-Astar\\PN-robot-arm\\out1.txt", "w+");
 	printf("%s", "输出结果");
 	printf("\n");
 	do
 	{
+		fprintf(fp, "%2d\t", P->new_m_num);
 		//fprintf(fp, "%2d\t", P->new_m_num);
 		for (i = 0; i < (*Tr).place_num; i++)
 		{
-			printf("%2d", P->new_m[i]);
+			//printf("%2d", P->new_m[i]);
 			fprintf(fp, "%2d\t", P->new_m[i]);
 		}
 
 		//printf("%s", " 已等待时间x是");
 		for (i = 0; i < (*Tr).place_num; i++)
 		{
-			printf("%2d", P->new_m_x[i]);
+			//printf("%2d", P->new_m_x[i]);
 			fprintf(fp, "%2d\t", P->new_m_x[i]);
 		}
 		fprintf(fp, "%2d\t", P->new_m_come);// 标识来源于M	
-		fprintf(fp, "%2d\t", P->new_m_transition);
+		fprintf(fp, "%2d\t", P->new_m_transition -1);
 		if (P->old == 0)
 		{
-			fprintf(fp, "%2d\n", -1);
+			fprintf(fp, "%2d\t", -1);
 		}
 		else
 		{
-			fprintf(fp, "%2d\n", P->old_mark); 
+			fprintf(fp, "%2d\t", P->old_mark); 
 		}
-	
+		if (P->finish == 1)
+		{
+			fprintf(fp, "%2d\t", 1);
+		}
+		else
+		{
+			fprintf(fp, "%2d\t", 0);
+		}
+		if (P->deadlock == 1)
+		{
+			fprintf(fp, "%2d\n", 1);
+		}
+		else
+		{
+			fprintf(fp, "%2d\n", 0);
+		}
 		
 		
 
@@ -105,7 +168,7 @@ void output1(Tree *Tr)
 			fprintf(fp, "%2d\t", P->old_mark);*/
 		//}
 		//fprintf(fp, "\n");
-		printf("\n");
+		//printf("\n");
 		P = P->next;
 	} while (P != NULL);
 	fclose(fp);
@@ -117,7 +180,7 @@ void output2(Tree *Tr)
 	FILE *fp;
 	struct Node *P, *Q;
 	P = (*Tr).head_Node;
-	fp = fopen("C:\\Users\\A237\\Desktop\\PN\\timed-PN(1)\\timed-PN\\out2.txt", "w+");
+	fp = fopen("D:\\timed_pn-Astar\\PN-robot-arm\\out2.txt", "w+");
 	printf("%s", "输出结果");
 	printf("\n");
 	do
@@ -226,7 +289,7 @@ void out(Tree *Tr)
 	FILE *fp;
 	struct Node *P, *Q;
 	P = (*Tr).head_Node;
-	fp = fopen("C:\\Users\\A237\\Desktop\\PN\\timed-PN(1)\\timed-PN\\backout1.txt", "w+");
+	fp = fopen("D:\\timed_pn-Astar\\PN-robot-arm\\backout1.txt", "w+");
 	printf("%s", "输出结果");
 	printf("\n");
 	do
@@ -289,7 +352,6 @@ void out(Tree *Tr)
 			printf("%s", " 它是终止标识 YES");
 			fprintf(fp, "%s", " 它是终止标识 YES");
 		}
-
 
 		if (P->old == 0)
 		{

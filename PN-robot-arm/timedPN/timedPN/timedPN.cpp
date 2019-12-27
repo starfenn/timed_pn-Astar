@@ -27,13 +27,13 @@ int main()
 {
 	InitSMatrix(&C_pre);
 	printf("创建前置关联矩阵C_pre: ");
-	CreateSMatrix(&C_pre, "E:\\PN-robot-arm\\pre.txt");
+	CreateSMatrix(&C_pre, "D:\\timed_pn-Astar\\PN-robot-arm\\pre.txt");
 	OutputSMatrix(C_pre);
 	printf("\n");
 
 	InitSMatrix(&C_post);
 	printf("创建后置关联矩阵C_post: ");
-	CreateSMatrix(&C_post, "E:\\PN-robot-arm\\post.txt");
+	CreateSMatrix(&C_post, "D:\\timed_pn-Astar\\PN-robot-arm\\post.txt");
 	OutputSMatrix(C_post);
 	printf("\n");
 
@@ -52,6 +52,7 @@ int main()
 	int *Delay = (int *)malloc(sizeof(int) * place_num);           //赋时时间
 	int produce_new;          //产生新标识
 	int new_mark_g; // 当前标识下已耗费的时间 
+	int g_max;
 
 	data_read(place_num, M0, Delay);
 	int count = 0;
@@ -67,7 +68,7 @@ int main()
 		for (int j = 0; j < place_num; j++)
 		{
 			current_mark[j] = s->new_m[j];    //将新表中第j行的标识赋值给当前的标识
-//			printf("%d", current_mark[j]);
+		//printf("%d", current_mark[j]);
 			current_mark_x[j] = s->new_m_x[j];
 			
 
@@ -90,10 +91,25 @@ int main()
 		}
 		s = s->next_open;
 	} while (s != NULL);
+
 	output1(&ReachableTree);
+	g_max = back_tree_1(&ReachableTree);
+	struct Node *D;
+	D = ReachableTree.deadlock_head;
+	do
+	{
+		D->new_m_h_min = g_max * 3;
+		D->new_m_g = g_max + D->new_m_h_min;
+
+		D = D->deadlock_next;
+
+	} while (D != NULL);
+
+	
 	//output2(&ReachableTree);
 	/*back_tree(&ReachableTree);
 	out(&ReachableTree);*/
-
+	out(&ReachableTree);
+	backoutput(&ReachableTree, Delay);
 
 }

@@ -13,6 +13,7 @@ Return void
 bool new_or_old(Tree *Tr)//判断是新的还是旧的 
 {
 	int i, Flag;
+	int min_x=10000;
 	int same = 1,a=1;
 	struct Node *P, *S;
 	P = (* Tr).head_Node;
@@ -34,7 +35,7 @@ bool new_or_old(Tree *Tr)//判断是新的还是旧的
 		{
 			for (i = 0; i < 27; i++)
 			{
-				if ((*Tr).current_node->new_m_x[i] == P->new_m_x[i] || (*Tr).current_node->new_m_x[i] - P->new_m_x[i] >= 10)
+				if ((*Tr).current_node->new_m_x[i] == P->new_m_x[i] || (*Tr).current_node->new_m_x[i] - P->new_m_x[i] >= 4)
 				{
 					a = 1;
 				}
@@ -45,26 +46,40 @@ bool new_or_old(Tree *Tr)//判断是新的还是旧的
 				}
 			}
 		}
-		if (same == 1 &&((*Tr).current_node->new_m_g - P->new_m_g >=10 || (*Tr).current_node->new_m_g == P->new_m_g) &&a==1)
+		if (same == 1 &&((*Tr).current_node->new_m_g - P->new_m_g >=4 || (*Tr).current_node->new_m_g == P->new_m_g) &&a==1)
 		{
-			Flag = 0;
-			(*Tr).current_node->old = 1;
-			(*Tr).current_node->same = NULL;
-			(*Tr).current_node->same_end = NULL;
-			(*Tr).current_node->old_mark = P->new_m_num;
-			(*Tr).current_node->finish = 0;
-			if (P->same == NULL)
+			for (i = 0; i < 27; i++)
 			{
-				P->same = (*Tr).current_node;
-				P->same_end = (*Tr).current_node;
+				if (min_x > (*Tr).current_node->new_m_x[i] - P->new_m_x[i])
+				{
+					min_x = (*Tr).current_node->new_m_x[i] - P->new_m_x[i];
+				}
+			}
+			if ((min_x - ((*Tr).current_node->new_m_g - P->new_m_g)) > 0)
+			{
+				Flag = 1;
 			}
 			else
 			{
-				S = P->same_end;
-				S->same = (*Tr).current_node;
-				P->same_end = (*Tr).current_node;
+				Flag = 0;
+				(*Tr).current_node->old = 1;
+				(*Tr).current_node->same = NULL;
+				(*Tr).current_node->same_end = NULL;
+				(*Tr).current_node->old_mark = P->new_m_num;
+				(*Tr).current_node->finish = 0;
+				if (P->same == NULL)
+				{
+					P->same = (*Tr).current_node;
+					P->same_end = (*Tr).current_node;
+				}
+				else
+				{
+					S = P->same_end;
+					S->same = (*Tr).current_node;
+					P->same_end = (*Tr).current_node;
+				}
+				break;//相同，则退出判断，并标记添加标志 
 			}
-			break;//相同，则退出判断，并标记添加标志 
 		}
 		else
 		{
